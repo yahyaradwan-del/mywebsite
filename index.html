@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Love</title>
+    <link rel="stylesheet" href="style..css">
+</head>
+<body>
+
+    <!-- ================= المرحلة الأولى: صفحة القفل (Lock Page) تظهر أولاً ================= -->
+    <div id="lock-page">
+        <div class="layer" id="lock-screen" role="dialog" aria-modal="true" aria-labelledby="lock-title">
+            <canvas id="bg" aria-hidden="true"></canvas>
+            <div class="lock-card">
+                <p class="lock-eyebrow">Private &amp; Protected</p>
+                <p class="lock-title" id="lock-title"><em>Enter</em> the secret</p>
+                <p class="lock-sub">Protected with love</p>
+                <div class="lock-rule"><span class="lock-rule-dot"></span></div>
+                <div class="input-wrap">
+                    <label for="pw" class="sr-only">Secret passphrase</label>
+                    <input type="password" id="pw" autocomplete="current-password" placeholder="Our special word…" aria-describedby="err-msg" aria-required="true" />
+                </div>
+                <button class="lock-btn" id="pw-btn" type="button">
+                    <span class="btn-label">Unlock</span>
+                    <span class="spinner" aria-hidden="true"></span>
+                </button>
+                <p class="err-msg" id="err-msg" role="alert" aria-live="assertive"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= المرحلة الثانية: شاشة التحميل (Loading Screen) تعمل بعد الباسورد ================= -->
+    <div id="loading-screen" class="screen pages-hidden">
+        <div class="spinner-wrap">
+            <img id="yah" src="images/225.webp" alt="photo">
+        </div>
+        <p class="loading-text">LOADING</p>
+    </div>
+
+    <!-- ================= المرحلة الثالثة: الصفحة الأولى والترحيب (First Page) ================= -->
+    <div id="firstpage" class="pages-hidden">
+        <!-- بتلات الورد المتساقطة -->
+        <div class="petal" style="left:5%; animation-duration:8s;">🌸</div>
+        <div class="petal" style="left:15%; animation-duration:12s;">🌸</div>
+        <div class="petal" style="left:25%; animation-duration:10s;">🌸</div>
+        <div class="petal" style="left:35%; animation-duration:7s;">🌸</div>
+        <div class="petal" style="left:45%; animation-duration:11s;">🌸</div>
+        <div class="petal" style="left:55%; animation-duration:9s;">🌸</div>
+        <div class="petal" style="left:65%; animation-duration:13s;">🌸</div>
+        <div class="petal" style="left:75%; animation-duration:8s;">🌸</div>
+        <div class="petal" style="left:85%; animation-duration:10s;">🌸</div>
+        <div class="petal" style="left:95%; animation-duration:12s;">🌸</div>
+
+        <div id="one"> 
+            <h1 id="wk">Welcome Kenzy</h1>  
+            <h2 id="rf">Ready for the surprise</h2>
+            <h3 id="iy">If you're ready, click here</h3>
+            <button id="y" onclick="showfirstpage()">Yes, I'm ready</button>
+        </div>
+    </div>
+
+    <!-- ================= المرحلة الرابعة: رسائل الطبيبة (Dr. Messages) ================= -->
+    <div id="messages-page" class="pages-hidden">
+        <h2 id="hdk">Hello, Dr.Kenzy</h2>
+
+        <div class="msg">
+            <button class="yy" onclick="showp(this)">click Here...</button>
+            <p class="msgp">You’re such a kind and wonderful person and l feel lucky to Share such a good bond with you.</p>
+        </div>
+        
+        <div class="msg">
+            <button class="yy" onclick="showp(this)">click Here...</button>
+            <p class="msgp">Thank you for everything you ve done for me. I thank God every day that youre in my lfe</p>
+        </div>
+
+        <div class="msg">
+            <button class="yy" onclick="showp(this)">click Here...</button>
+            <p class="msgp">Wishing you success, happiness, and everything your heart desires</p>
+        </div>
+
+        <div class="msg">
+            <button class="yy" onclick="showp(this)">click Here...</button>
+            <p class="msgp">May God keep you safe for me, my love</p>
+        </div>
+
+        <button class="yy" id="enter-story-btn">Enter our storylane</button>
+    </div>
+
+    <!-- ================= المرحلة الخامسة: اللحظات السعيدة (Happy Moments) ================= -->
+    <div id="moments-page" class="pages-hidden">
+        <h2>Our happy moments</h2>
+
+        <div class="cards-grid">
+            <div class="card"> 
+                <img src="images/1.jpg" alt="image">
+                <h2>Her smile says everything</h2>
+                <p>You are really one of the sweetest girls to the eye you can see, and life is lucky because there is a girl like you.</p>
+            </div>
+
+            <div class="card"> 
+                <img src="images/2.jpg" alt="image">
+                <h2>The beauty of the whole world is in your eyes</h2>
+                <p>May your life be as beautiful as your soul.</p>
+            </div>
+
+            <div class="card"> 
+                <img src="images/3.jpg" alt="image">
+                <h2>The most beautiful thing the eye sees</h2>
+                <p>I hope your trip is full of happiness and success</p>
+            </div>
+        </div>
+
+        <h2 id="caption">Thank You For The Memories</h2>
+
+        <p class="cp">Everything is beautiful with you, and everything has smoothly when we are together</p>
+        <p class="cp">I hope you always remain my love, my support, and my strength, my love</p>
+        <p class="cp">You deserve all the joy in the world.</p>
+        <button id="see-together-btn">Click here if you want to see us together</button>
+    </div>
+
+    <!-- ================= المرحلة السادسة: ألبوم الصور (Photos Stack) ================= -->
+    <main class="phone-container pages-hidden">
+        <h2 class="main-title">The most beautiful moments together</h2>
+
+        <div class="magic-card" id="cardContainer">
+            <div class="card-cover" id="cardCover">
+                <span class="heart-icon">💝</span>
+                <h3>Click to open our memories</h3>
+            </div>
+
+            <div class="photos-stack">
+                
+
+                <img src="5778650460234387063.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387064.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387065.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387066.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387067.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387068.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387069.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387070.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387071.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387072.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387073.jpg" alt="image" class="stack-photo">
+
+<img src="images/5778650460234387074.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387075.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387076.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387077.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387078.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387079.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387080.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387081.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387082.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387083.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387084.jpg" alt="image" class="stack-photo">
+
+<img src="images/5778650460234387085.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387086.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387087.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387088.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387089.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387090.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387091.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387092.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387093.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387094.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387095.jpg" alt="image" class="stack-photo">
+
+<img src="images/5778650460234387096.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387097.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387098.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387099.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387100.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387101.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387102.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387103.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387104.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387105.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387106.jpg" alt="image" class="stack-photo">
+
+<img src="images/5778650460234387107.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387108.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387109.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387110.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387112.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387113.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387114.jpg" alt="image" class="stack-photo">
+<img src="images/5792088558205078864.jpg" alt="image" class="stack-photo">
+<img src="images/5792088558205078865.jpg" alt="image" class="stack-photo">
+<img src="images/5792088558205078866.jpg" alt="image" class="stack-photo">
+<img src="images/5792088558205078867.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387051.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387052.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387053.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387054.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387055.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387056.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387057.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387058.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387059.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387061.jpg" alt="image" class="stack-photo">
+<img src="images/5778650460234387062.jpg" alt="image" class="stack-photo">
+
+<img src="images/5792088558205078868.jpg" alt="image" class="stack-photo">
+<img src="images/5792088558205078869.jpg" alt="image" class="stack-photo">
+                
+                <div class="stack-photo end-card">
+                    <span>🌸</span>
+                    <p>انا حبيت اعملك حاجه ليكى ونفس الوقت للذكرى بينى وبينك معمول بكل حب وحطيت كل مجهودى علشان بس اقدر ارسم الابتسامه على وشك حابب اقولك ربنا يخليكى ليا وميحرمنيش منك ابدا واشوفك احلى دكتوره ف الدنيا واسمك مكسر الدنيا ف كل حته  يارب بس يكون عجبك 
+و اخيرا وليس اخرا 
+بحبكك يا غزال 🦌✨</p>
+                    <audio src="images/IMG_0722.MP4 " controls></audio>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+    <script src="end.js"></script>
+</body>
+</html>

@@ -1,0 +1,739 @@
+/* ==========================================================================
+   1. استيراد الخطوط 
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&family=Caveat:wght@700&family=Quicksand:wght@500;700&family=Yellowtail&family=Lora:ital,wght@0,400;1,400&family=Playfair+Display:ital@1&display=swap');
+
+/* ==========================================================================
+   2. التصفير والتنسيقات العامة الموحدة (Global Styles)
+   ========================================================================== */
+:root {
+  --rose: #e8637a;
+  --rose-deep: #b83a56;
+  --rose-pale: #f7c5cf;
+  --gold: #d4a853;
+  --ink: #110810;
+  --glass: rgba(255, 248, 250, 0.07);
+  --border: rgba(255, 200, 215, 0.16);
+  --blur: blur(24px) saturate(160%);
+  --r-sm: 12px;
+  --ease: 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-lg: 0 24px 80px rgba(184, 58, 86, 0.26), 0 4px 24px rgba(0, 0, 0, 0.42);
+  --sans: "Poppins", system-ui, sans-serif;
+  --serif: "Playfair Display", Georgia, serif;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  color: #fff;
+  min-height: 100vh;
+  background: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* كلاس الإخفاء والتحكم العام بالشاشات */
+.pages-hidden {
+  display: none !important;
+}
+
+.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(1.03);
+  transition: all 0.5s ease;
+}
+
+/* ==========================================================================
+   3. الجزء الأول: شاشة القفل (Lock Page)
+   ========================================================================== */
+#bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 100; /* رفع قيمته ليكون ظاهراً في البداية فوق كل شيء */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--ease), transform var(--ease);
+}
+
+#lock-screen {
+  background: radial-gradient(
+    ellipse 80% 65% at 50% 40%,
+    rgba(0, 0, 0, 0.14) 0%,
+    rgba(10, 4, 8, 0.96) 100%
+  );
+}
+
+.lock-card {
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  padding: 58px 50px 50px;
+  width: min(420px, 92vw);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: cardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  position: relative;
+  overflow: hidden;
+  z-index: 101;
+}
+
+.lock-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 200, 215, 0.4), rgba(212, 168, 83, 0.25), rgba(255, 200, 215, 0.4), transparent);
+}
+
+.lock-card::after {
+  content: "✦";
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 9px;
+  color: rgba(212, 168, 83, 0.45);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(34px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+.lock-eyebrow {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.75;
+  margin-bottom: 14px;
+}
+
+.lock-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(28px, 6vw, 40px);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 7px;
+  line-height: 1.1;
+}
+
+.lock-title em {
+  font-style: normal;
+  color: var(--rose-pale);
+}
+
+.lock-sub {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(247, 197, 207, 0.72);
+  margin-bottom: 38px;
+  opacity: 0.65;
+}
+
+.lock-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.lock-rule::before, .lock-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.lock-rule-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rose);
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(232, 99, 122, 0.65);
+}
+
+.input-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.07em;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--ease), background var(--ease), box-shadow var(--ease);
+}
+
+.input-wrap input::placeholder { color: rgba(247, 197, 207, 0.28); }
+.input-wrap input:focus {
+  border-color: rgba(232, 99, 122, 0.5);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 0 3px rgba(232, 99, 122, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.input-wrap input.shake {
+  animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  border-color: #ff6b6b !important;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(5px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}
+
+.lock-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+  border: none;
+  border-radius: var(--r-sm);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--ease), box-shadow var(--ease), opacity var(--ease);
+  box-shadow: 0 5px 22px rgba(184, 58, 86, 0.38);
+}
+
+.lock-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+}
+
+.lock-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(184, 58, 86, 0.55);
+}
+
+.lock-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+  margin: 0 auto;
+}
+
+.lock-btn.loading .btn-label { display: none; }
+.lock-btn.loading .spinner { display: block; }
+
+@keyframes btn-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.err-msg {
+  font-size: 12px;
+  color: #ff9eaa;
+  letter-spacing: 0.06em;
+  margin-top: 14px;
+  min-height: 18px;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .lock-card { padding: 45px 25px 35px; }
+}
+
+/* ==========================================================================
+   4. الجزء الثاني: شاشة التحميل (Loading Screen)
+   ========================================================================== */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 200; /* أعلى من شاشة القفل لتغطيها بالكامل عند فتح القفل */
+  background-color: #f0f4f8;
+}
+
+.spinner-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#yah {
+  width: 100px; 
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  animation: img-spin 3s linear infinite;
+}
+
+@keyframes img-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 25px;
+  letter-spacing: 2px;
+  color: #3a6073;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   5. الجزء الثالث: الصفحة الأولى والترحيب (First Page)
+   ========================================================================== */
+#firstpage {
+  background: linear-gradient(to bottom, #ffdbe8, #fff0f5);
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -50px;
+  font-size: 25px;
+  animation: fall linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-50px) rotate(0deg); }
+  100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+#one {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 90%;
+}
+
+#wk {
+  color: rgba(223, 102, 148, 0.918);
+  font-family: 'Yellowtail', cursive, var(--sans);
+  font-size: clamp(32px, 5vw, 48px); 
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+#rf {
+  font-family: var(--serif);
+  font-size: clamp(32px, 5vw, 48px);
+  color: #33746e;
+  margin-bottom: 10px;
+}
+
+#iy {
+  font-family: "Lora", serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 300;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+#y {
+  background-color: pink;
+  color: rgb(238, 26, 26);
+  width: 200px;
+  height: 60px;
+  font-size: 20px;
+  border: none;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  display: inline-block;
+}
+
+#y:hover {
+  background-color: #ffb6c1;
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   6. الجزء الرابع: رسائل الطبيبة (Dr. Messages)
+   ========================================================================== */
+#messages-page {
+  background: linear-gradient(to bottom, #ffdbe8, #fff0f5);
+  width: 100%;
+  min-height: 100vh;
+  padding: 50px 20px;
+  overflow-y: auto;
+}
+
+#hdk {
+  color: #3e8ab6;
+  text-align: center;  
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.msg {
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.yy {
+  background-color: pink;
+  color: rgb(238, 26, 26);
+  width: 150px;
+  height: 60px;
+  font-size: 20px;
+  border: none;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 15px;
+}
+
+.yy:hover {
+  background-color: #ffb6c1;
+}
+
+#messages-page #enter-story-btn {
+  width: 250px;
+  margin: 40px auto 0 auto;
+  display: block;
+}
+
+.msgp {
+  display: none; 
+  width: fit-content;
+  margin: 15px auto;
+  padding: 15px;
+  background: white;
+  color: #333;
+  border-radius: 8px; 
+  font-family: "Caveat", cursive;
+  font-weight: 500;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   7. الجزء الخامس: اللحظات السعيدة (Happy Moments)
+   ========================================================================== */
+#moments-page {
+  background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffb3c6 100%);
+  font-family: 'Poppins', sans-serif;
+  color: #4a3b42;
+  min-height: 100vh;
+  padding: 60px 20px;
+  width: 100%;
+}
+
+#moments-page h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: #fb6f92;
+  margin-bottom: 40px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto 50px auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 2px solid #ffe5ec;
+  box-shadow: 0 10px 20px rgba(251, 111, 146, 0.15);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(251, 111, 146, 0.3);
+  background: #ffffff;
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  border: 3px solid #ffc2d1;
+  transition: transform 0.5s ease;
+}
+
+.card:hover img {
+  transform: rotate(1deg) scale(1.03);
+}
+
+.card h2 {
+  font-size: 1.4rem !important;
+  color: #ff5c8a !important;
+  margin-bottom: 12px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #6c5861;
+}
+
+#caption {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.8rem;
+  color: #ff477e;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cp {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  font-style: italic;
+  color: #5c4d54;
+  font-weight: 300;
+  text-align: center;
+}
+
+#moments-page button {
+  background: linear-gradient(45deg, #ff758f, #ffb3c6);
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 25px auto;
+  display: block;
+  box-shadow: 0 5px 15px rgba(255, 117, 143, 0.4);
+  transition: all 0.3s ease;
+}
+
+#moments-page button:hover {
+  background: linear-gradient(45deg, #ff477e, #ff85a1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 71, 126, 0.6);
+}
+
+/* قلوب الحب المتطايرة */
+.heart {
+  position: fixed;
+  font-size: 24px;
+  color: #ff477e;
+  pointer-events: none;
+  animation: flyUp 2s linear forwards;
+  z-index: 9999;
+}
+
+@keyframes flyUp {
+  0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-10vh) translateX(var(--randomX, 20px)) scale(1.5); opacity: 0; }
+}
+
+/* ==========================================================================
+   8. الجزء السادس: ألبوم صور الموبايل (Photos Stack)
+   ========================================================================== */
+.phone-container {
+  background: linear-gradient(180deg, #fff0f3 0%, #ffdee5 100%);
+  font-family: 'Quicksand', sans-serif;
+  width: 100%;
+  max-width: 400px;
+  min-height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.phone-container .main-title {
+  font-family: 'Caveat', cursive;
+  font-size: 2.3rem;
+  font-style: italic; 
+  color: #ff477e;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  line-height: 1.2;
+  text-shadow: 1px 1px 2px rgba(255, 71, 126, 0.15);
+}
+
+.magic-card {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  perspective: 1000px;
+}
+
+.card-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff758f 0%, #ff85a1 100%);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  box-shadow: 0 15px 35px rgba(255, 117, 143, 0.4);
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-cover .heart-icon {
+  font-size: 4.5rem;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.card-cover h3 {
+  font-size: 1.3rem;
+  margin-top: 15px;
+  font-weight: 700;
+}
+
+.card-cover.opened {
+  transform: translateY(-120%) rotate(-10deg) scale(0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.photos-stack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.stack-photo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 25px;
+  border: 6px solid #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-origin: bottom center;
+}
+
+.end-card {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #ff477e;
+  text-align: center;
+  padding: 20px;
+}
+
+.end-card span { 
+  font-size: 3rem; 
+  margin-bottom: 15px; 
+  animation: pulse 2s infinite; 
+}
+
+.end-card p { 
+  font-size: 1.3rem; 
+  font-weight: 700; 
+}
+
+.stack-photo.swipe-out {
+  transform: translateX(150%) rotate(30deg) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
